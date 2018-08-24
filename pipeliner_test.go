@@ -19,12 +19,16 @@ func TestPipeliner(t *testing.T) {
 }
 
 func TestPipelinerError(t *testing.T) {
+	testPipelinerError(t)
+}
+
+func testPipelinerError(t *testing.T) {
 	v, err := testPipeliner(true, false)
 	require.Error(t, err)
 	if err != nil {
 		require.Equal(t, err.Error(), "errored out")
 	}
-	for _, e := range v[25:] {
+	for _, e := range v[28:] {
 		require.Equal(t, 0, e)
 	}
 }
@@ -33,8 +37,14 @@ func TestPipelinerCancel(t *testing.T) {
 	v, err := testPipeliner(false, true)
 	require.Error(t, err)
 	require.Equal(t, err.Error(), "context canceled")
-	for _, e := range v[25:] {
+	for _, e := range v[28:] {
 		require.Equal(t, 0, e)
+	}
+}
+
+func TestPipelinerErrorStress(t *testing.T) {
+	for i := 0; i < 1000; i++ {
+		testPipelinerError(t)
 	}
 }
 

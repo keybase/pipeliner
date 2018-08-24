@@ -38,7 +38,7 @@ func (p *Pipeliner) launchOne() {
 	p.numOut++
 }
 
-func (p *Pipeliner) WaitForRoom(ctx context.Context) (err error) {
+func (p *Pipeliner) WaitForRoom(ctx context.Context) error {
 	for {
 		p.checkContextDone(ctx)
 		if err := p.getError(); err != nil {
@@ -72,8 +72,8 @@ func (p *Pipeliner) hasOutstanding() bool {
 }
 
 func (p *Pipeliner) setError(e error) {
-	p.RLock()
-	defer p.RUnlock()
+	p.Lock()
+	defer p.Unlock()
 	if e != nil && p.err == nil {
 		p.err = e
 	}
