@@ -110,8 +110,15 @@ func (p *Pipeliner) wait(ctx context.Context) {
 // Flush any oustanding requests, blocking until the last completes.
 // Returns an error set by CompleteOne, or a context-based error
 // if any request was canceled mid-flight.
-func (p *Pipeliner) Flush(ctx context.Context) (err error) {
-	for p.hasOutstanding() {
+func (p *Pipeliner) Flush(ctx context.Context) error {
+	for {
+		p.checkContextDone(ctx)
+		if err := p.getError(); err != nil {
+			return err
+		}
+		if !p.hasOutstanding() {
+			break
+		}
 		p.wait(ctx)
 	}
 	return p.getError()
