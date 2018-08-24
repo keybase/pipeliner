@@ -5,6 +5,8 @@ import (
 	"sync"
 )
 
+// Pipeliner coordinates a flow of parallel requests, rate-limiting so that
+// only a fixed number are oustanding at any one given time.
 type Pipeliner struct {
 	sync.RWMutex
 	Window int
@@ -13,6 +15,7 @@ type Pipeliner struct {
 	err    error
 }
 
+// NewPipeliner makes a pipeliner with window size `w`.
 func NewPipeliner(w int) *Pipeliner {
 	return &Pipeliner{
 		Window: w,
@@ -38,6 +41,11 @@ func (p *Pipeliner) launchOne() {
 	p.numOut++
 }
 
+// WaitForRoom will block until there is room in the window to fire
+// another request. It returns an error if any prior request failed,
+// instructing the caller to stop firing off new requests. The error
+// originates either from CompleteOne(), or from a context-based
+// cancelation
 func (p *Pipeliner) WaitForRoom(ctx context.Context) error {
 	for {
 		p.checkContextDone(ctx)
@@ -53,6 +61,10 @@ func (p *Pipeliner) WaitForRoom(ctx context.Context) error {
 	return nil
 }
 
+// CompleteOne should be called when a request is completed, to make
+// room for subsequent requests. Call it with an error if you want the
+// rest of the pipeline to be short-circuited. This is the error that
+// is returned from WaitForRoom.
 func (p *Pipeliner) CompleteOne(e error) {
 	p.setError(e)
 	p.landOne()
@@ -95,6 +107,9 @@ func (p *Pipeliner) wait(ctx context.Context) {
 	}
 }
 
+// Flush any oustanding requests, blocking until the last completes.
+// Returns an error set by CompleteOne, or a context-based error
+// if any request was canceled mid-flight.
 func (p *Pipeliner) Flush(ctx context.Context) (err error) {
 	for p.hasOutstanding() {
 		p.wait(ctx)
