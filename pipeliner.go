@@ -9,7 +9,7 @@ import (
 // only a fixed number are oustanding at any one given time.
 type Pipeliner struct {
 	sync.RWMutex
-	Window int
+	window int
 	numOut int
 	ch     chan struct{}
 	err    error
@@ -18,7 +18,7 @@ type Pipeliner struct {
 // NewPipeliner makes a pipeliner with window size `w`.
 func NewPipeliner(w int) *Pipeliner {
 	return &Pipeliner{
-		Window: w,
+		window: w,
 		ch:     make(chan struct{}),
 	}
 }
@@ -32,7 +32,7 @@ func (p *Pipeliner) getError() error {
 func (p *Pipeliner) hasRoom() bool {
 	p.RLock()
 	defer p.RUnlock()
-	return p.numOut < p.Window
+	return p.numOut < p.window
 }
 
 func (p *Pipeliner) launchOne() {
