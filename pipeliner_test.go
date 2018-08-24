@@ -1,9 +1,9 @@
 package pipeliner
 
 import (
+	"context"
 	"errors"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/net/context"
 	"math/rand"
 	"sync"
 	"testing"
