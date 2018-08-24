@@ -1,8 +1,9 @@
 # pipeliner
 
-A simplified pipline library, for parallel requests with bounded parallelism.
-
 [![Build Status](https://travis-ci.org/keybase/pipeliner.svg?branch=master)](https://travis-ci.org/keybase/pipeliner)
+[![GoDoc](https://godoc.org/github.com/keybase/pipeliner?status.svg)](https://godoc.org/github.com/keybase/pipeliner)
+
+A simplified pipline library, for parallel requests with bounded parallelism.
 
 ## Getting
 
