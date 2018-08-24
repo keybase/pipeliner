@@ -43,7 +43,7 @@ func TestPipelinerCancel(t *testing.T) {
 }
 
 func TestPipelinerErrorStress(t *testing.T) {
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 200; i++ {
 		testPipelinerError(t)
 	}
 }
