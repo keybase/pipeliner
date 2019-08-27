@@ -8,8 +8,9 @@ language: go
 # updates. Any older versions be considered deprecated. Don't bother testing
 # with them.
 go:
-  - 1.9.x
-  - 1.x
+  - 1.10.x
+  - 1.11.x
+  - 1.12.x
 
 # Only clone the most recent commit.
 git:
@@ -21,5 +22,9 @@ notifications:
 
 # script always runs to completion (set +e).
 script:
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.16.0
+  - golangci-lint run
+  - go vet ./...
+  - golint ./...
   - go test -v -race # Run all the tests with the race detector enabled
 

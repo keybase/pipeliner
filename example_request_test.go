@@ -3,17 +3,18 @@ package pipeliner_test
 import (
 	"context"
 	"fmt"
-	"github.com/keybase/pipeliner"
 	"sync"
 	"time"
+
+	"github.com/keybase/pipeliner"
 )
 
-type Request struct{ i int }
+type Request struct{ i int } // nolint
 type Result struct{ i int }
 
 func (r Request) Do() (Result, error) {
 	time.Sleep(time.Millisecond)
-	return Result{r.i}, nil
+	return Result(r), nil
 }
 
 func Example() {
