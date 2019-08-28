@@ -9,7 +9,7 @@ import (
 	"github.com/keybase/pipeliner"
 )
 
-type Request struct{ i int } // nolint
+type Request struct{ i int } //nolint
 type Result struct{ i int }
 
 func (r Request) Do() (Result, error) {
