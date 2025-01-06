@@ -7,7 +7,7 @@ import (
 )
 
 // Pipeliner coordinates a flow of parallel requests, rate-limiting so that
-// only a fixed number are oustanding at any one given time.
+// only a fixed number are outstanding at any one given time.
 type Pipeliner struct {
 	sync.RWMutex
 	window int
@@ -46,7 +46,7 @@ func (p *Pipeliner) launchOne() {
 // another request. It returns an error if any prior request failed,
 // instructing the caller to stop firing off new requests. The error
 // originates either from CompleteOne(), or from a context-based
-// cancelation
+// cancellation
 func (p *Pipeliner) WaitForRoom(ctx context.Context) error {
 	for {
 		p.checkContextDone(ctx)

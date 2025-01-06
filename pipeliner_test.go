@@ -3,11 +3,12 @@ package pipeliner
 import (
 	"context"
 	"errors"
-	"github.com/stretchr/testify/require"
 	"math/rand"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestPipeliner(t *testing.T) {
@@ -58,7 +59,7 @@ func testPipeliner(doError bool, doCancel bool) ([]int, error) {
 		ctx, cancelFunc = context.WithCancel(ctx)
 	}
 
-	f := func(ctx context.Context, i int) error {
+	f := func(_ context.Context, i int) error {
 		if doError && i == 20 {
 			return errors.New("errored out")
 		}
