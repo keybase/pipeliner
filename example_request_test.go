@@ -37,7 +37,7 @@ func makeRequests(ctx context.Context, requests []Request, window int) (results 
 
 	pipeliner := pipeliner.NewPipeliner(window)
 
-	worker := func(ctx context.Context, i int) error {
+	worker := func(_ context.Context, i int) error {
 		res, err := requests[i].Do()
 		resultsLock.Lock()
 		results[i] = res
