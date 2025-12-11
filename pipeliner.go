@@ -1,9 +1,8 @@
 package pipeliner
 
 import (
+	"context"
 	"sync"
-
-	"golang.org/x/net/context"
 )
 
 // Pipeliner coordinates a flow of parallel requests, rate-limiting so that

@@ -31,7 +31,6 @@ func Example() {
 // at any given time. It puts the results in `results`, and errors out on the first
 // failure.
 func makeRequests(ctx context.Context, requests []Request, window int) (results []Result, err error) {
-
 	var resultsLock sync.Mutex
 	results = make([]Result, len(requests))
 
