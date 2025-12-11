@@ -1,6 +1,6 @@
 # pipeliner
 
-[![Build Status](https://travis-ci.org/keybase/pipeliner.svg?branch=master)](https://travis-ci.org/keybase/pipeliner)
+[![Build Status](https://github.com/keybase/pipeliner/actions/workflows/ci.yml/badge.svg)](https://github.com/keybase/pipeliner/actions)
 [![GoDoc](https://godoc.org/github.com/keybase/pipeliner?status.svg)](https://godoc.org/github.com/keybase/pipeliner)
 
 A simplified pipline library, for parallel requests with bounded parallelism.
@@ -16,7 +16,7 @@ go get github.com/keybase/pipeliner
 Often you want do network requests with bounded parallelism. Let's say you have
 1,000 DNS queries to make, and don't want to wait for them to complete in serial,
 but don't want to blast your server with 1,000 simultaneous requests. In this case,
-*bounded parallelism* makes sense. Make 1,000 requests with only 10 outstanding
+_bounded parallelism_ makes sense. Make 1,000 requests with only 10 outstanding
 at any one time.
 
 At this point, I usually Google for it, and come up with [this blog post](https://blog.golang.org/pipelines), and I become slightly sad, because that is a lot of code to digest and

@@ -69,7 +69,7 @@ func testPipeliner(doError bool, doCancel bool) ([]int, error) {
 		vlock.Lock()
 		v[i] = i
 		vlock.Unlock()
-		time.Sleep(time.Microsecond * time.Duration((rand.Int() % 17)))
+		time.Sleep(time.Microsecond * time.Duration((rand.Int() % 17))) //nolint:gosec // Test code, weak RNG is acceptable
 		return nil
 	}
 
