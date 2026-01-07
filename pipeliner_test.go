@@ -76,10 +76,15 @@ func testPipeliner(doError bool, doCancel bool) ([]int, error) {
 	for i := range v {
 		err := pipeliner.WaitForRoom(ctx)
 		if err != nil {
+			// Ensure any in-flight goroutines are complete before returning. Note that Flush does not actually wait if there is an error.
+			for pipeliner.hasOutstanding() {
+				<-pipeliner.ch
+			}
 			return v, err
 		}
 		go func(i int) { pipeliner.CompleteOne(f(ctx, i)) }(i)
 	}
+
 	err := pipeliner.Flush(ctx)
 	return v, err
 }
