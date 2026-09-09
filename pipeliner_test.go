@@ -94,9 +94,7 @@ func TestTryReserveConcurrentNeverExceedsWindow(t *testing.T) {
 	var maxActive atomic.Int32
 
 	for range attempts {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			if !p.tryReserve() {
 				return
 			}
@@ -111,7 +109,7 @@ func TestTryReserveConcurrentNeverExceedsWindow(t *testing.T) {
 			}
 			active.Add(-1)
 			p.landOne()
-		}()
+		})
 	}
 
 	wg.Wait()
